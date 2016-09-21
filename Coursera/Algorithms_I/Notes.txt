@@ -1,0 +1,26 @@
+Week 1:
+Merge Sort Pseudo Code - 
+C = Output array [length = n]
+A = 1st sorted array [n/2]
+B = 2nd sorted array [n/2]
+i = 1; j = 1
+
+for k = 1 to n
+  if A[i] < B[j]
+    C[k] = A[i]
+    i++
+  elif B[j] < A[i]
+    C[k] = B[j]
+    j++
+end
+
+
+Week 2:
+Time Complexity of Quicksort on an already sorted array is O(N) 
+{where N is the number of elements in the array and the pivot element is the first element of the array}
+
+On a random array input, time complexity of Quicksort is O(N LogN) where pivot is the median element of the subarray during every recursive call.
+
+Ideally, it is best to choose the pivot randomly in every recursive call. The time complexity would therefore be O(N LogN)
+
+
