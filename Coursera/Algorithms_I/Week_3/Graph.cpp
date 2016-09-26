@@ -46,6 +46,18 @@ bool Vertex::removeNeighbours(const Neighbours& neighbours)
 }
 
 
+bool Vertex::isNeighbourPresent(uint32_t neighbour) const
+{
+    bool retVal(true);
+
+    if (m_neighbours.find(neighbour) != m_neighbours.end())
+    {
+        retVal = false;
+    }
+    return retVal;
+}
+
+
 size_t Vertex::getNeighboursCount() const
 {
     return m_neighbours.size();
@@ -78,12 +90,19 @@ Graph::~Graph()
 bool Graph::addEdge(uint32_t v1, uint32_t v2)
 {
     addVertex(v1);
-    addVertex(v2);
-
     m_vertices[v1].addNeighbour(v2);
-    m_vertices[v2].addNeighbour(v1);
+    try
+    {
+        const Vertex& vertex2 = m_vertices.at(v2);
+        if (vertex2.isNeighbourPresent(v1) == false)
+        {
+            ++m_numOfEdges;
+        }
+    }
+    catch(...)
+    {
+    }
 
-    ++m_numOfEdges;
     return true;
 }
 
@@ -102,6 +121,57 @@ bool Graph::removeEdge(uint32_t v1, uint32_t v2)
     }
 
     return true;
+}
+
+
+size_t Graph::getNumberOfVertices() const
+{
+    return m_vertices.size() - 1;
+}
+
+
+size_t Graph::getNumberOfEdges() const
+{
+    return m_numOfEdges;
+}
+
+
+size_t Graph::getKargerMinCut()
+{
+/*
+While there are more than 2 vertices:
+•  pick a remaining edge (u,v) uniformly at random
+•  merge (or “contract” ) u and v into a single vertex
+•  remove self-loops
+return cut represented by final 2 vertices.
+
+    while (m_vertices.size() > (2 + 1))
+    {
+        
+    }
+*/
+
+    return 0;
+}
+
+
+ostream& operator<<(ostream& os, const Graph& g)
+{
+    size_t verticesLen(g.m_vertices.size());
+    for(size_t i(1); i < verticesLen; ++i)
+    {
+        os << i << " : ";
+        const Neighbours& neighbours = g.m_vertices[i].getNeighbours();
+        Neighbours::const_iterator neighboursCit = neighbours.cbegin();
+        Neighbours::const_iterator neighboursCitEnd = neighbours.cend();
+        for(; neighboursCit != neighboursCitEnd; ++neighboursCit)
+        {
+            os << *neighboursCit << " ";
+        }
+        os << endl;
+    }
+
+    return os;
 }
 
 
@@ -126,34 +196,31 @@ bool Graph::addNeighbours(uint32_t v, Neighbours& neighbours)
 }
 
 
-size_t Graph::getNumberOfVertices() const
+Edge Graph::getRandomEdge(uint32_t value) const
 {
-    return m_vertices.size() - 1;
-}
+    uint32_t counter(0);
+    bool edgeFound(false);
+    Edge retVal;
 
-
-size_t Graph::getNumberOfEdges() const
-{
-    return (m_numOfEdges/2);
-}
-
-
-ostream& operator<<(ostream& os, const Graph& g)
-{
-    size_t verticesLen(g.m_vertices.size());
-    for(size_t i(1); i < verticesLen; ++i)
+    size_t verticesLen(m_vertices.size());
+    for(size_t i(1); ((i < verticesLen) && (edgeFound == false)); ++i)
     {
-        os << i << " : ";
-        const Neighbours& neighbours = g.m_vertices[i].getNeighbours();
+        const Neighbours& neighbours = m_vertices[i].getNeighbours();
         Neighbours::const_iterator neighboursCit = neighbours.cbegin();
         Neighbours::const_iterator neighboursCitEnd = neighbours.cend();
         for(; neighboursCit != neighboursCitEnd; ++neighboursCit)
         {
-            os << *neighboursCit << " ";
+            if (counter == value)
+            {
+                retVal.first = i;
+                retVal.second = *neighboursCit;
+                edgeFound = true;
+                break; 
+            }
+            ++counter;
         }
-        os << endl;
     }
 
-    return os;
+    return retVal;
 }
 

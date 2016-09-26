@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <set>
+#include <utility>
 #include <cstdint>
 #include <cstddef>
 #include <ostream>
@@ -22,6 +23,8 @@ class Vertex
     bool removeNeighbour(uint32_t neighbour);
     bool removeNeighbours(const Neighbours& neighbours);
 
+    bool isNeighbourPresent(uint32_t neighbour) const;
+
     size_t getNeighboursCount() const;
     const Neighbours& getNeighbours() const;
 
@@ -34,6 +37,8 @@ class Vertex
 
 
 typedef std::vector<Vertex> Vertices;
+typedef std::pair<uint32_t, uint32_t> Edge;
+
 class Graph
 {
   public:
@@ -46,6 +51,8 @@ class Graph
     size_t getNumberOfVertices() const;
     size_t getNumberOfEdges() const;
 
+    size_t getKargerMinCut();
+
     friend std::ostream& operator<<(std::ostream& os, const Graph& g);
 
   private:
@@ -54,6 +61,8 @@ class Graph
 
     bool addVertex(uint32_t v);
     bool addNeighbours(uint32_t v, Neighbours& neighbours);
+
+    Edge getRandomEdge(uint32_t value) const;
 
     Vertices m_vertices;
     size_t m_numOfEdges;
