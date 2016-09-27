@@ -34,6 +34,7 @@ int main()
     // cout << g;
     cout << "Number of Vertices : " << g.getNumberOfVertices() << endl;
     cout << "Number of Edges : " << g.getNumberOfEdges() << endl;
+    cout << "Karger Minimum Cut : " << g.getKargerMinCut() << endl;
 
     return 0;
 }

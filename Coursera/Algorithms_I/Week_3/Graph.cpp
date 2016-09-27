@@ -1,8 +1,9 @@
 #include "Graph.h"
 
 #include <algorithm>
-#include <stdlib.h>
-#include <time.h>   
+#include <cstdlib>
+#include <ctime>   
+#include <iostream>   
 
 using namespace std;
 
@@ -78,10 +79,12 @@ const Neighbours& Vertex::getNeighbours() const
 
 Graph::Graph()
     : m_vertices()
+    , m_numOfVertices(0)
     , m_numOfEdges(0)
 {
     // Initializing the first element to NO neighbours
     addVertex(0);
+    srand(time(NULL));
 }
 
 
@@ -115,21 +118,37 @@ bool Graph::removeEdge(uint32_t v1, uint32_t v2)
     if (m_vertices[v1].getNeighboursCount() != 0)
     {
         m_vertices[v1].removeNeighbour(v2);
-        --m_numOfEdges;
     }
     if (m_vertices[v2].getNeighboursCount() != 0)
     {
         m_vertices[v2].removeNeighbour(v1);
-        --m_numOfEdges;
+    }
+    --m_numOfEdges;
+
+    return true;
+}
+
+
+bool Graph::mergeEdge(uint32_t v1, uint32_t v2)
+{
+    const Neighbours& neighbours = m_vertices[v1].getNeighbours();
+    Neighbours::const_iterator neighboursCit = neighbours.cbegin();
+    Neighbours::const_iterator neighboursCitEnd = neighbours.cend();
+    for(; neighboursCit != neighboursCitEnd; ++neighboursCit)
+    {
+        removeEdge(v1, *neighboursCit);
     }
 
     return true;
 }
 
 
-size_t Graph::getNumberOfVertices() const
+size_t Graph::getNumberOfVertices()
 {
-    return m_vertices.size() - 1;
+    m_numOfVertices = 0;
+    for_each(m_vertices.begin(), m_vertices.end(), 
+             [&](Vertex& v){ if (v.getNeighboursCount() != 0) ++m_numOfVertices; });
+    return m_numOfVertices;
 }
 
 
@@ -142,19 +161,21 @@ size_t Graph::getNumberOfEdges() const
 size_t Graph::getKargerMinCut()
 {
 /*
-While there are more than 2 vertices:
-•  pick a remaining edge (u,v) uniformly at random
-•  merge (or “contract” ) u and v into a single vertex
-•  remove self-loops
-return cut represented by final 2 vertices.
-
-    while (m_vertices.size() > (2 + 1))
-    {
-        
-    }
+    While there are more than 2 vertices:
+    •  pick a remaining edge (u,v) uniformly at random
+    •  merge (or “contract” ) u and v into a single vertex
+    •  remove self-loops
+    return cut represented by final 2 vertices.
 */
+    while (getNumberOfVertices() > 2)
+    {
+        Edge edge = getRandomEdge(rand() % m_numOfEdges);
+        cout << "Edge : " << edge.first << "; " << edge.second << endl;
+        mergeEdge(edge.first, edge.second);
+        cout << *this << endl;
+    }
 
-    return 0;
+    return m_numOfEdges;
 }
 
 
@@ -163,15 +184,18 @@ ostream& operator<<(ostream& os, const Graph& g)
     size_t verticesLen(g.m_vertices.size());
     for(size_t i(1); i < verticesLen; ++i)
     {
-        os << i << " : ";
-        const Neighbours& neighbours = g.m_vertices[i].getNeighbours();
-        Neighbours::const_iterator neighboursCit = neighbours.cbegin();
-        Neighbours::const_iterator neighboursCitEnd = neighbours.cend();
-        for(; neighboursCit != neighboursCitEnd; ++neighboursCit)
+        if (g.m_vertices[i].getNeighboursCount() != 0)
         {
-            os << *neighboursCit << " ";
+            os << i << " : ";
+            const Neighbours& neighbours = g.m_vertices[i].getNeighbours();
+            Neighbours::const_iterator neighboursCit = neighbours.cbegin();
+            Neighbours::const_iterator neighboursCitEnd = neighbours.cend();
+            for(; neighboursCit != neighboursCitEnd; ++neighboursCit)
+            {
+                os << *neighboursCit << " ";
+            }
+            os << endl;
         }
-        os << endl;
     }
 
     return os;

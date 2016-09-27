@@ -47,8 +47,9 @@ class Graph
 
     bool addEdge(uint32_t v1, uint32_t v2);
     bool removeEdge(uint32_t v1, uint32_t v2);
+    bool mergeEdge(uint32_t v1, uint32_t v2);
 
-    size_t getNumberOfVertices() const;
+    size_t getNumberOfVertices();
     size_t getNumberOfEdges() const;
 
     size_t getKargerMinCut();
@@ -65,6 +66,7 @@ class Graph
     Edge getRandomEdge(uint32_t value) const;
 
     Vertices m_vertices;
+    size_t m_numOfVertices;
     size_t m_numOfEdges;
 };
 
