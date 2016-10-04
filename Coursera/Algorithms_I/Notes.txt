@@ -14,6 +14,7 @@ for k = 1 to n
     j++
 end
 
+===============================================================================
 
 Week 2:
 Time Complexity of Quicksort on an already sorted array is O(N) 
@@ -22,5 +23,153 @@ Time Complexity of Quicksort on an already sorted array is O(N)
 On a random array input, time complexity of Quicksort is O(N LogN) where pivot is the median element of the subarray during every recursive call.
 
 Ideally, it is best to choose the pivot randomly in every recursive call. The time complexity would therefore be O(N LogN)
+
+Quick Sort Pseudo Code - 
+
+===============================================================================
+
+Week 3:
+Karger Min Cut Pseudo Code -
+    While there are more than 2 vertices:
+    •  pick a remaining edge (u,v) uniformly at random
+    •  merge (or “contract” ) u and v into a single vertex
+    •  remove self-loops
+    return cut represented by final 2 vertices.
+
+===============================================================================
+
+Week 4:
+Undirected Graphs - can be traversed in both directions.
+Directed Graphs - can be traversed in one direction only.
+
+Idea behind Graph search is to do it as effiiently as possible i.e, don't explore anything twice.
+Generic algorithm for Graph Search: 
+- Given Graph G (Directed or Undirected) and start vertex s.
+- Initially s explored, all other vertices unexplored.
+- While possible:
+    - Choose an edge (u, v) with u explored and v unexplored.
+        - If none, halt.
+    - Mark v as explored.
+At end of the algorithm, v vertices are explored; in other words, G has a path P from s to v.
+
+Breadth First Search [M edges & N Vertices] - 
+- Explore nodes in "layers"
+- Can compute shortest paths
+- Can compute connected components of an undirected graph
+- Time complexity O(M+N) using Queue (FIFO) as underlying data structure
+Given Graph G and start vertex s.
+- Initially s explored, all other vertices unexplored.
+- Let Q [Queue data structure] be initialized with s.
+- While Q != 0:
+    - remove the first node of Q, call it v
+    - for each edge (v, w):
+        - if w unexplored:
+            - mark w as explored
+            - add w to Q (at the end)
+At end of the algorithm, v vertices are explored; in other words, G has a path P from s to v.
+Running time of main while loop == O(Ns + Ms) where Ns - number of nodes reachable from s
+                                                    Ms - number of nodes reachable from s
+
+Shortest Path (for BFS only):
+Goal - Compute dist(v): the fewest number of edges on a path from s to v.
+Extra Code - Initialize dist(v) = {0 if v = s
+                                  {Inf if v != s 
+- When considering edge(v, w):
+    - if w unexplored, the set dist(w) = dist(v) + 1
+Claim - At termination, dist(v) = i <==> v in ith layer [i.e., shortest s-v path has i edges]
+Proof Idea - Every layer-i node w is added to Q by a layer-(i-1) node v via the edge (v, w)
+
+Undirected Connectivity
+- All nodes unexplored [assume nodes are labelled 1 to N]
+- for i:= 1 to N
+    - if i not yet explored
+        - BFS(G, i)
+
+Depth First Search [M edges & N Vertices] - 
+- Explore aggressively (like a maze); only backtrack when necessary
+    - Explore aggressively == Go as deeply as you can
+- Compute topological ordering of a directed acyclic graph 
+- Compute connected components in directed graphs
+- Time complexity O(M+N) using Stack (LIFO) as underlying data structure
+
+Recursive Version of DFS (Graph G, start vertex s):
+- Mark s as explored
+- For every edge (s, v):
+    - if v unexplored
+        - DFS (G, v)
+Claim - At end of the algorithm, v vertices are explored; in other words, G has a path P from s to v.
+Running time of main while loop == O(Ns + Ms) where Ns - number of nodes reachable from s
+                                                    Ms - number of nodes reachable from s
+
+Topological ordering of a directed graph: is an ordering of the vertices of a graph so that all of the arcs, the directed edges of the graph, only go forward in the ordering.
+A topological ordering of a directed graph G is a labelling f of G's nodes such that:
+a) the f(v)'s are the set {1, 2, ..., N}
+b) (u, v) in G ==> f(u) < f(v)
+Time complexity is O(M + N)
+
+If G has directed cycle ===> no topological ordering.
+
+Every directed acycle graph has a sink vertex i.e., a vertex with no outgoing arrows/arcs.
+All arcs should go forward; if any arcs go backwards, it is a violation.
+
+To compute Topological ordering:
+- Let v be a sink vertex of G
+- Set f(v) = N
+- Recurse on G - [v]
+
+DFS (Graph G, Start vertex s)
+- Mark s explored
+- For every edge (s, v):
+    - if v not yet explored:
+        - DFS (G, v)
+- Set f(s) = current_label
+- current_label -= 1
+
+DFS-Loop (Graph G)
+- Mark all nodes unexplored
+- current_label = n // [to keep track of ordering]
+- for each vertex v in G:
+    - if v not yet explored:
+        - DFS (G, v)
+
+
+===============================================================================
+
+Week 5:
+
+Dijkstra's Shortest Path algorithm - works in any directed graph with non-negative edge lengths.
+It computes the shortest paths from a source vertex to all other vertices.
+
+Input: 
+- Directed graph G=(V, E). (m = |E|, n = |V|)
+- Each edge has non-negative length
+- Source vertex s; destination vertex v.
+Output:
+- for each v in V, compute L(v):= length of a shortest s-v path in G.
+- Length of path == Sum of edge lengths
+Assumptions:
+- for every v in V, there is a directed path from s to v.
+
+BFS can also compute shortest paths (in linear time) only if the length of every edge is 1.
+
+Algorithm:
+- Initialize X = [s] where X is the list of vertices processed so far
+    in other words, X is the list of vertices for which the shortest path has been computed
+- A[s] = 0, where A is the array of computed shortest path distances [sum of the length of edges]
+                  A will have one entry for each possible destination vertex v
+- B[s] = empty path, B is the array of computed shortest paths [sum of the number of edges]
+                     B will have one entry for each possible destination vertex v
+** B will not be there in the actual algorithm; it is there for explanation only
+
+Main loop:
+While X != V:    // need to grow X by one node
+    Among all edges (v, w) in E with v in X and w !in X, pick the edge that minimizes A[v] + length(v, w)
+        A[v] + length(v, w) ---> is called Dijkstra's Greedy Criterion
+        Call it (v*, w*)
+    Add w* to X
+    Set A[w*] := A[v*] + length(v*, w*)
+    Set B[w*] := B[v*] v(v*, w*)
+
+-------------------------------------------------------------------------------
 
 
