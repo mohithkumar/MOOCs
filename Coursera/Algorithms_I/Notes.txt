@@ -1,4 +1,24 @@
 Week 1:
+
+Upshot of an algorithm is the running time which is the number of operations.
+
+Worst-case analysis : No assumption is made about the problem/input. 
+Average-case analysis : Require domain knowledge of the problem/input.
+Benchmarks : Require domain knowledge of the problem; Eg an assumption is made (or) an understanding is required about the size of inputs etc.
+Asymptotic analysis : refers to the performance or running time of an algorithm as N (number of inputs) tends to infinity.
+
+A Fast algorithm is one whose worst-case running time grows slowly with input size.
+
+It is preferred to do Worst-case analysis using Asymptotic running time.
+
+Mergesort - 
+Time complexity == 6NlogN ---> where 6N is the work per level and logN is the number of levels.
+
+Running Time:
+For every input	array of N numbers, MergeSort produces a sorted output array and uses atmost 6NlogN + 6N operations.
+
+At each level J = 0, 1, 2, .., N, there are 2^J subproblems, each of size N/(2^J).
+
 Merge Sort Pseudo Code - 
 C = Output array [length = n]
 A = 1st sorted array [n/2]
@@ -51,6 +71,8 @@ Generic algorithm for Graph Search:
         - If none, halt.
     - Mark v as explored.
 At end of the algorithm, v vertices are explored; in other words, G has a path P from s to v.
+
+BFS uses Queue while DFS uses Stack.
 
 Breadth First Search [M edges & N Vertices] - 
 - Explore nodes in "layers"
@@ -170,6 +192,63 @@ While X != V:    // need to grow X by one node
     Set A[w*] := A[v*] + length(v*, w*)
     Set B[w*] := B[v*] v(v*, w*)
 
+
+Time complexity of Dijkstra's algorithm using straight forward implementation is O(mn).
+Time complexity of Dijkstra's algorithm using Heaps is O(m log n).
+
 -------------------------------------------------------------------------------
+
+Heap: performs insert, extract minimum operations in O(log n)
+- Container for objects that have keys
+- Conceptually, a perfectly balanced binary tree [Height of such a tree == log N]
+- Heap property: at every node, key <= children's keys
+- Extract minimum by swapping up last leaf, bubbling down
+- Insert via bubbling up
+Also: Will need ability to delete from middle of heap. (bubble up or down as needed)
+
+Invariant #1: Elements in Heap = Vertices of (V - X).
+
+Invariant #2: For every v not in X, key[v] = smallest Dijkstra greedy score of an edge (w, v) in E with w in X.
+
+By invariants, extract-min yields correct vertex w* to add to X next.
+               and we set A[w*] to key[w*]
+
+When w extracted from heap [i.e., added to X]
+- for each edge (w, v) in E:
+    - if v in (V - X) [i.e., in heap]
+        - delete v from heap
+        - recompute key[v] = min(Key[v], A[w] + length(w, v))
+
+There would be (n - 1) extract mins
+Each edge (v, w) triggers at most one Delete/Insert combo (if v added to X first)
+So, the numberof heap operations is O(m)
+So, running time is O(m log n)
+
+Time taken to Heapify a bunch of objects: O(n)
+Time taken to delete a particular object: O(log n)
+
+Heap is the fast way to do repeated minimum computations.
+
+Heap Sort == O(n log n)
+- Heapify the given array of elements
+- Extract minimum one by one
+
+Priority Queue == Heap
+
+Data Structures: point is to organize data so that it can be accessed quickly and usefully.
+
+Balanced Binary Search Tree:
+- Search  == O(log n)
+- Select  == O(log n)
+- Min/Max == O(log n)
+- Insert  == O(log n)
+- Delete  == O(log n)
+
+BST:
+- One node per key
+- Each node has 3 pointers: left child, right child & parent
+- left subtree < node < right subtree
+- Height [or Depth] is the longest number hops from root to leaf
+- Height could vary between log N for a perfectly balanced tree and N for a worst case
 
 
