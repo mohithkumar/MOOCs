@@ -251,4 +251,29 @@ BST:
 - Height [or Depth] is the longest number hops from root to leaf
 - Height could vary between log N for a perfectly balanced tree and N for a worst case
 
+===============================================================================
+
+Week 6:
+
+Hash Tables - insert, delete and lookup == O(1)
+
+Input: Unsorted array A of integers and a target sum T.
+Goal: Determine whether or not there are 2 numbers x, y in A such that x + y = T
+Solution: a) Insert element of A into hash table H  [O(n)]
+          b) for each x in A; look for T-x in H     [O(n)]
+         
+
+- Array with N buckets
+- A hash function converts keys of set S into a position in the array H.
+
+Resolving Hash collisions:
+A) Chaining [aka Separate Chaining]
+B) Open Addressing - only one object per bucket
+    - Linear Probing : choose the free bucket that is immediately adjacent to the cuurent one [like Fixnetix]
+    - Double Hashing : Hash once; if the bucket is already full then hash again and use the second hash as an offset.
+
+Deletion is difficult with Open Addressing.
+
+
+
 
