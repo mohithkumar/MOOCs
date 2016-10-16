@@ -263,7 +263,7 @@ Solution: a) Insert element of A into hash table H  [O(n)]
           b) for each x in A; look for T-x in H     [O(n)]
          
 
-- Array with N buckets
+- Array with N buckets 
 - A hash function converts keys of set S into a position in the array H.
 
 Resolving Hash collisions:
@@ -274,6 +274,50 @@ B) Open Addressing - only one object per bucket
 
 Deletion is difficult with Open Addressing.
 
+A good hash function is key to getting good performance from Hash Tables. 
+A good hash function spreads out data across buckets as evenly as possible.
 
+Basically a hash function maps an object from the universe to a bucket number in the Hash table.
+
+Tips for choosing the number of buckets in Hashtable:
+- Choose N to be a prime number
+- Not too close to the power of 2
+- Not too close to the power of 100
+
+Load factor of a Hash table = (Number of objects)/(Number of buckets);
+
+For a truly constant time operation, Load factor must be equal or closer to 1.
+
+For a good Hash table performance,
+- the hash function should be good
+- load factor must be equal/closer to 1
+
+-------------------------------------------------------------------------------
+
+Bloom Filters: 
+- are a variant of Hash Tables
+- are more space efficient than regular Hash tables
+- cannot store an associated object
+    - can only remember what has been seen and what has not been seen
+- no deletions allowed [only insertion are possible]
+- have a small false positive probability [but no false negatives]
+
+Bloom Filters are used in Network Routers software where:
+- they keep track of blocked IP addresses
+- they keep track of cache contents [to avoid spurious lookups]
+- they maintain statistics to check for Denial-Of-Service attacks etc 
+
+Bloom Filters need limited memory and support superfast insertions & lookups.
+
+Bloom Filter: is an array of n bits. If the number of objects in data set is S, then n/S is the number of bits per object in data set S.
+There will be K hash functions where K is > 1.
+Insert(x):
+---------
+for i: 1, 2, ..., K
+    set A{N:(x)] = 1
+
+Lookup(x):
+---------
+return True <==> A[n:(x)] = 1 for every i = 1, 2, ..., K
 
 
