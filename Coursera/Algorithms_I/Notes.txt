@@ -34,6 +34,15 @@ for k = 1 to n
     j++
 end
 
+-------------------------------------------------------------------------------
+
+STL:
+a) std::list::sort - is usually implemented using some form of merge sort, because merge sort is stable, and merges are cheap when working with linked lists. 
+b) std::sort - is implemented as a intro-sort (introspective sort), which is basically a Quicksort that keeps track of its recursion depth, and will switch to a Heapsort (usually slower but guaranteed O(N logN) complexity) if the Quicksort is using too deep of recursion.
+c) std::stable_sort - exists for sorting array-like containers.
+
+std::sort is fast but not necessarily stable while std::stable_sort is stable but often somewhat slower.
+ 
 ===============================================================================
 
 Week 2:
