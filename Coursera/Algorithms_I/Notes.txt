@@ -42,6 +42,7 @@ b) std::sort - is implemented as a intro-sort (introspective sort), which is bas
 c) std::stable_sort - exists for sorting array-like containers.
 
 std::sort is fast but not necessarily stable while std::stable_sort is stable but often somewhat slower.
+While std::stable_sort preserves the relative order of the elements with equivalent values, std::sort may not do so.
  
 ===============================================================================
 
