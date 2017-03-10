@@ -56,6 +56,20 @@ Ideally, it is best to choose the pivot randomly in every recursive call. The ti
 
 Quick Sort Pseudo Code - 
 
+-------------------------------------------------------------------------------
+
+Algorithm       Time Complexity                     Space Complexity
+                Best        Average     Worst       Worst
+Quicksort 	Ω(N logN)   Θ(N logN)   O(N^2) 	    O(logN)
+Heapsort 	Ω(N logN)   Θ(N logN)   O(N logN)   O(1)
+Mergesort 	Ω(N logN)   Θ(N logN)   O(N logN)   O(N)
+Bubble Sort 	Ω(N)        Θ(N^2)      O(N^2) 	    O(1)
+Insertion Sort 	Ω(N) 	    Θ(N^2)      O(N^2)      O(1)
+Selection Sort 	Ω(N^2) 	    Θ(N^2)      O(N^2)      O(1)
+Tree Sort 	Ω(N logN)   Θ(N logN)   O(N^2)      O(N)
+Bucket Sort 	Ω(N+k)      Θ(N+k)      O(N^2)      O(N)
+Radix Sort 	Ω(Nk)       Θ(Nk)       O(Nk)       O(N+k)
+
 ===============================================================================
 
 Week 3:
