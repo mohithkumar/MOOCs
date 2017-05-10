@@ -52,9 +52,30 @@ Time Complexity of Quicksort on an already sorted array is O(N)
 
 On a random array input, time complexity of Quicksort is O(N LogN) where pivot is the median element of the subarray during every recursive call.
 
+Quicksort works in place; thus minimal extra memory is needed (whereas Mergesort doesn't operate in-place).
+
 Ideally, it is best to choose the pivot randomly in every recursive call. The time complexity would therefore be O(N LogN)
 
 Quick Sort Pseudo Code - 
+QuickSort(array A, length n)    
+    If n=1, return    
+    p = ChoosePivot(A, n)    
+    Partition A around p
+      Rearrange array so that    
+        Left of pivot < pivot    
+        Right of pivot > pivot    
+    Recursively sort 1st part    
+    Recursively sort 2nd part    
+
+
+Partition(A, l, r)    [input corresponds to A[l...r]]    
+    p := A[l]
+    i := l+1
+    for j=l+1 to r
+        if A[j] < p
+            swap A[j] and A[i]
+            i := i+1
+    swap A[l] and A[i-1]
 
 -------------------------------------------------------------------------------
 
