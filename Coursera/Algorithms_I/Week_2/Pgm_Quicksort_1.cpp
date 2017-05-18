@@ -9,9 +9,9 @@ using namespace std;
 typedef vector<uint32_t> IntegerArray;
 uint32_t comparisons(0);
 
-uint32_t ChoosePivot(IntegerArray& arr, size_t pos)
+uint32_t ChoosePivot(IntegerArray& arr, size_t left, size_t right)
 {
-    return arr[pos];
+    return arr[left];
 }
 
 
@@ -27,49 +27,56 @@ void Display(IntegerArray& arr)
 }
 
 
-size_t Partition(IntegerArray& arr, size_t l, size_t r, uint32_t pivot)
+size_t Partition(IntegerArray& arr, size_t left, size_t right, uint32_t pivot)
 {
     auto temp(0);
-    auto i(l+1);
-    for (auto j(l+1); j < r; ++j)
+    auto i(left);
+    for (auto j(left+1); j < right; ++j)
     {
         if (arr[j] < pivot)
         {
+            ++i;
             temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
-            ++i;
         }
     }
 
-    temp = arr[l];
-    arr[l] = arr[i-1];
-    arr[i-1] = temp;
-    return i-1;
+    temp = arr[left];
+    arr[left] = arr[i];
+    arr[i] = temp;
+
+    return i;
 }
 
 
-void QuickSort(IntegerArray& arr, size_t l, size_t r)
+void QuickSort(IntegerArray& arr, size_t left, size_t right)
 {
-    if (l < r)
+    if (left < right)
     {
-        auto pivot = ChoosePivot(arr, l);
+        auto pivot = ChoosePivot(arr, left, right);
 
-        auto p = Partition(arr, l, r, pivot);
+        auto p = Partition(arr, left, right, pivot);
 
-        comparisons += (r - l - 1);
+        comparisons += (right - left - 1);
 
-        QuickSort(arr, l, p);
+        QuickSort(arr, left, p);
 
-        QuickSort(arr, p+1, r);
+        QuickSort(arr, p+1, right);
     }
 }
 
 
-int main()
+int main(int argc, char** argv)
 {
+    if (argc != 2) {
+        return 0;
+    } 
     IntegerArray numVect;
-    ifstream inFile("IntegerArray.txt");
+    // ifstream inFile("IntegerArray_100_FullySorted.txt");
+    // ifstream inFile("IntegerArray_100.txt");
+    // ifstream inFile("IntegerArray_100_FullyUnsorted.txt");
+    ifstream inFile(argv[1]);
     if (inFile.is_open())
     {
         while (inFile)
@@ -89,7 +96,7 @@ int main()
     // for_each(numVect.cbegin(), numVect.cend(), [] (uint32_t n) {cout << n << endl;} );
     cout << "Array Size : " << numVect.size() << endl;
     QuickSort(numVect, 0, numVect.size());
-    // Display(numVect);
+    Display(numVect);
     cout << "Count : " << comparisons << endl;
     return 0;
 }
