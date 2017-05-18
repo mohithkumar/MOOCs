@@ -32,7 +32,10 @@ size_t Partition(IntegerArray& arr, size_t left, size_t right, uint32_t pivot)
     auto temp(0);
     auto i(left);
     for (auto j(left+1); j < right; ++j) {
-        if (arr[j] < pivot) {
+        // For 'k'th Smallest
+        if (arr[j] < pivot) { 
+        // For 'k'th Largest
+        // if (arr[j] > pivot) {
             ++i;
             temp   = arr[i];
             arr[i] = arr[j];
@@ -100,7 +103,16 @@ int main(int argc, char** argv)
 
     // for_each(numVect.cbegin(), numVect.cend(), [] (uint32_t n) {cout << n << endl;} );
     cout << "Array Size : " << numVect.size() << endl;
-    cout << "Element at 8 place : " << QuickSelect(numVect, 0, numVect.size(), 10) << endl;
+    cout << "Element at 1 place : " << QuickSelect(numVect, 0, numVect.size(), 1) << endl;
+    cout << "Element at 2 place : " << QuickSelect(numVect, 0, numVect.size(), 2) << endl;
+    cout << "Element at 3 place : " << QuickSelect(numVect, 0, numVect.size(), 3) << endl;
+    cout << "Element at 4 place : " << QuickSelect(numVect, 0, numVect.size(), 4) << endl;
+    cout << "Element at 5 place : " << QuickSelect(numVect, 0, numVect.size(), 5) << endl;
+    cout << "Element at 6 place : " << QuickSelect(numVect, 0, numVect.size(), 6) << endl;
+    cout << "Element at 7 place : " << QuickSelect(numVect, 0, numVect.size(), 7) << endl;
+    cout << "Element at 8 place : " << QuickSelect(numVect, 0, numVect.size(), 8) << endl;
+    cout << "Element at 9 place : " << QuickSelect(numVect, 0, numVect.size(), 9) << endl;
+    cout << "Element at 10 place : " << QuickSelect(numVect, 0, numVect.size(), 10) << endl;
     // Display(numVect);
     cout << "Count : " << comparisons << endl;
     return 0;
